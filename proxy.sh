@@ -17,14 +17,13 @@ install_3proxy() {
     wget -qO- $URL | bsdtar -xvf-
     cd 3proxy-0.9.3
     make -f Makefile.Linux
-    if [ -d "/usr/local/etc/3proxy/" ]; then
-	rm -r /usr/local/etc/3proxy/
-    fi
-    mkdir -p /usr/local/etc/3proxy/{bin,logs,stat}
-    cp src/3proxy /usr/local/etc/3proxy/bin/
-    cp ./scripts/rc.d/proxy.sh /etc/init.d/3proxy
-    chmod +x /etc/init.d/3proxy
-    chkconfig 3proxy on
+    adduser --system --disabled-login --no-create-home --group proxy3
+    mkdir -p /var/log/3proxy
+    mkdir /etc/3proxy
+    cp bin/3proxy /usr/bin/
+    chown proxy3:proxy3 -R /etc/3proxy
+    chown proxy3:proxy3 /usr/bin/3proxy
+    chown proxy3:proxy3 /var/log/3proxy
     cd $WORKDIR
 }
 
@@ -113,7 +112,8 @@ cat >>/etc/rc.local <<EOF
 bash ${WORKDIR}/boot_iptables.sh
 bash ${WORKDIR}/boot_ifconfig.sh
 ulimit -n 10048
-service 3proxy start
+systemctl enable 3proxy
+systemctl start 3proxy
 EOF
 
 bash /etc/rc.local
