@@ -24,6 +24,20 @@ install_3proxy() {
     chown proxy3:proxy3 -R /etc/3proxy
     chown proxy3:proxy3 /usr/bin/3proxy
     chown proxy3:proxy3 /var/log/3proxy
+    cat>/etc/systemd/system/3proxy.service <<EOF
+    #service config
+[Unit]
+Description=3proxy Proxy Server
+[Service]
+Type=simple
+ExecStart=/usr/bin/3proxy /etc/3proxy/3proxy.cfg
+ExecStop=/bin/kill '/usr/bin/pgrep -u proxy3'
+RemainAfterExit=yes
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+    EOF
+    systemctl daemon-reload
     cd $WORKDIR
 }
 
