@@ -112,7 +112,7 @@ gen_ifconfig >$WORKDIR/boot_ifconfig.sh
 chmod +x ${WORKDIR}/boot_*.sh /etc/rc.local
 
 gen_3proxy >/etc/3proxy/3proxy.cfg
-ulimit -n 10048
+ulimit -S -n 4096
 /etc/init.d/3proxy start
 
 gen_proxy_file_for_user
