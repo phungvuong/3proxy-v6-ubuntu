@@ -36,7 +36,7 @@ install_3proxy() {
 gen_3proxy() {
     cat <<EOF
 daemon
-maxconn 1000
+maxconn 2000
 nscache 65536
 timeouts 1 5 30 60 180 1800 15 60
 setgid 65535
@@ -112,7 +112,7 @@ gen_ifconfig >$WORKDIR/boot_ifconfig.sh
 chmod +x ${WORKDIR}/boot_*.sh /etc/rc.local
 
 gen_3proxy >/etc/3proxy/3proxy.cfg
-
+ulimit -n 10048
 /etc/init.d/3proxy start
 
 gen_proxy_file_for_user
