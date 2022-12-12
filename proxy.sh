@@ -12,7 +12,7 @@ gen64() {
     echo "$1:$(ip64):$(ip64):$(ip64):$(ip64)"
 }
 install_3proxy() {
-    version=0.9.3
+    version=0.8.9
     apt-get update && apt-get -y upgrade
     apt-get install gcc make git -y
     wget --no-check-certificate -O 3proxy-${version}.tar.gz https://raw.githubusercontent.com/Thanhan0901/install-proxy-v6/main/3proxy-${version}.tar.gz
